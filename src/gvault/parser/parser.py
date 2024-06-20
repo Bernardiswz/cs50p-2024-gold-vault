@@ -4,7 +4,9 @@ import argparse
 class Parser:
     def __init__(self):
         self.parser: argparse.ArgumentParser = argparse.ArgumentParser(
-            description="Process input files and generate an output file."
+            usage="gvault (-e | --encrypt | -d | --decrypt) input -o OUTPUT",
+            description="Reversibly encrypt|decrypt input files to output files. Password prompted by user input for \
+            encryption/decryption."
         )
         # Group to store mutually exclusive encrypt/decrypt flags
         self.enc_dec_group: argparse._MutuallyExclusiveGroup = self.parser.add_mutually_exclusive_group()
@@ -25,27 +27,30 @@ class Parser:
     def _add_input_arg(self) -> None:
         self.parser.add_argument(
             "input",
+            help="Input file/directory paths to processing.",
             nargs="+",
-            required=True
+            type=str
         )
 
     def _add_output_arg_flag(self) -> None:
         self.parser.add_argument(
             "-o", "--output",
             nargs="+",
-            required=True
+            help="Output file/directory paths post processing.",
+            required=True,
+            type=str
         )
 
     def _add_encrypt_flag(self) -> None:
         self.enc_dec_group.add_argument(
             "-e", "--encrypt",
             action="store_true",
-            required=True
+            help="Toggle encryption usage."
         )
 
     def _add_decrypt_flag(self) -> None:
         self.enc_dec_group.add_argument(
             "-d", "--decrypt",
             action="store_true",
-            required=True
+            help="Toggle decryption usage."
         )
