@@ -1,8 +1,16 @@
 import os
 from typing import List
+from ..error_handling.parser_exceptions import (
+    InvalidPathTypeError,
+    PathsListLenError,
+    PathNotFoundError
+)
 
 
-class PathsValidator:
+__all__ = ["ParserValidator"]
+
+
+class ParserValidator:
     def __init__(self, input_paths: List[str], output_paths: List[str]):
         self.input_paths: List[str] = input_paths
         self.output_paths: List[str] = output_paths
@@ -17,7 +25,7 @@ class PathsValidator:
 
     def _validate_io_paths_list_len(self) -> None:
         if len(self.input_paths) != len(self.output_paths):
-            raise Exception()
+            raise PathsListLenError()
         
     def _validate_paths(self, paths_list: List[str]) -> None:
         for path in paths_list:
@@ -26,8 +34,8 @@ class PathsValidator:
     
     def _validate_path_exists(self, path: str) -> None:
         if not os.path.exists(path):
-            raise Exception()
+            raise PathNotFoundError(path)
 
     def _validate_path_type(self, path: str) -> None:
         if not os.path.isfile(path) or os.path.isdir(path) or os.path.islink(path):
-            raise Exception()
+            raise InvalidPathTypeError(path)
