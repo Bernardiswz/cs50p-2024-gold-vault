@@ -1,19 +1,18 @@
-from typing import List
+from typing import Dict, List, Tuple
 
 
 class ParseArgsGenerator:
-    # Expected format:
-    # [script.py] [-e|--encrypt|-d|--decrypt] [input...] [-o|--output] [output...]
-    ARGV_TEMPLATE: List[str] = ["script.py",]
+    @staticmethod
+    def get_encrypt_parse_args_params() -> Tuple[List[str], Dict[str, bool]]:
+        argv_short_enc_flag: List[str] = ["script.py", "-e", "file.py", "-o", "output_file.py"]
+        argv_full_enc_flag: List[str] = ["script.py", "--encrypt", "file.py", "-o", "output_file.py"]
+        expected_enc_attr: Dict[str, bool] = {"encrypt": True}
+        return [(argv_short_enc_flag, expected_enc_attr), (argv_full_enc_flag, expected_enc_attr)]
 
-    def __init__(self):
-        ...
-
-    def get_encrypt_parse_args_params(self) -> List[str]:
-        argv_template: List[str] = self.ARGV_TEMPLATE
-        short_enc_flag_argv: List[str] = argv_template.append("-e")
-        full_enc_flag_argv: List[str] = argv_template.append("--encryption")
-        
-    def _generate_appended_io_args_list(self, argv: List[str]) -> List[str]:
-        return argv.extend(["input_file.py", "-o", "output_file.py"])
+    @staticmethod
+    def get_decrypt_parse_args_params() -> Tuple[List[str], Dict[str, bool]]:
+        argv_short_dec_flag: List[str] = ["script.py", "-d", "file.py", "-o", "output_file.py"]
+        argv_full_dec_flag: List[str] = ["script.py", "--decrypt", "file.py", "-o", "output_file.py"]
+        expected_dec_attr: Dict[str, bool] = {"decrypt": True}
+        return [(argv_short_dec_flag, expected_dec_attr), (argv_full_dec_flag, expected_dec_attr)]
 
