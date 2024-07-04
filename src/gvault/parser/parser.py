@@ -12,7 +12,7 @@ class Parser:
             encryption/decryption."
         )
         # Group to store mutually exclusive encrypt/decrypt flags
-        self.enc_dec_group: argparse._MutuallyExclusiveGroup = self.parser.add_mutually_exclusive_group()
+        self.enc_dec_group: argparse._MutuallyExclusiveGroup = self.parser.add_mutually_exclusive_group(required=True)
         self._add_arguments()
 
     def parse_args(self) -> argparse.Namespace:
