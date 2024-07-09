@@ -1,4 +1,6 @@
 import argparse
+from typing import Union
+
 
 from .error_handling.parser_exceptions import (
     PathsListLenError,
@@ -13,7 +15,7 @@ from .factories import (
     ParserValidatorFactory,
 )
 
-from .types import (
+from .parser_types import (
     ErrorHandler,
     Parser,
     ParserValidator
@@ -23,7 +25,7 @@ from .types import (
 __all__ = ["get_parser"]
 
 
-def get_parser() -> argparse.Namespace:
+def get_parser() -> Union[argparse.Namespace, None]:
     parser: Parser = ParserFactory.create_parser()
     error_handler: ErrorHandler = ErrorHandlerFactory.create_handler()
 

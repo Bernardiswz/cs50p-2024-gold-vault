@@ -12,7 +12,7 @@ __all__ = ["ErrorHandler"]
 
 class ErrorHandler:
     @staticmethod
-    def _parser_exit(message: str) -> None:
+    def _parser_exit(message: str = "") -> None:
         print(USAGE)
         if message:
             print(message)

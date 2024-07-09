@@ -20,11 +20,13 @@ class PathsListLenError(Exception):
 
 class PathNotFoundError(Exception):
     def __init__(self, path: str):
-        self.message: str = PATH_NOT_FOUND_ERROR
-        super().__init__(self.message.format(path))
+        self.path: str = path
+        self.message: str = PATH_NOT_FOUND_ERROR.format(path)
+        super().__init__(self.message)
 
 
 class InvalidPathTypeError(Exception):
     def __init__(self, path: str):
-        self.message: str = INVALID_PATH_TYPE_ERROR
-        super().__init__(self.message.format(path))
+        self.path: str = path
+        self.message: str = INVALID_PATH_TYPE_ERROR.format(path)
+        super().__init__(self.message)

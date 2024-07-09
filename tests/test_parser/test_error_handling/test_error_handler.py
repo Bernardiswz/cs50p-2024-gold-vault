@@ -32,7 +32,7 @@ class TestErrorHandler:
         assert USAGE in captured.out
 
     @pytest.mark.parametrize("path", ["path_1.py", "path_2/file_1.py"])
-    def test_handle_invalid_path_type(self, capsys: pytest.CaptureFixture, path: List[str]):
+    def test_handle_invalid_path_type(self, capsys: pytest.CaptureFixture, path: str):
         with pytest.raises(SystemExit):
             self.error_handler.handle_invalid_path_type(INVALID_PATH_TYPE_ERROR.format(path))
             captured: CaptureResult = capsys.readouterr()
@@ -45,7 +45,7 @@ class TestErrorHandler:
             assert PATHS_LIST_LEN_ERROR in captured
 
     @pytest.mark.parametrize("path", ["path_1.py", "path_2/file_1.py"])
-    def test_handle_path_not_found(self, capsys:pytest.CaptureFixture, path: List[str]):
+    def test_handle_path_not_found(self, capsys:pytest.CaptureFixture, path: str):
         with pytest.raises(SystemExit):
             self.error_handler.handle_path_not_found(PATH_NOT_FOUND_ERROR.format(path))
             captured: CaptureResult = capsys.readouterr()
