@@ -1,8 +1,9 @@
-from typing import List, Protocol
+from typing import List, Protocol, runtime_checkable
 
 __all__ = ["ParserValidator"]
 
 
+@runtime_checkable
 class ParserValidator(Protocol):    
     def validate(self) -> None:
         ...

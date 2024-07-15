@@ -14,9 +14,7 @@ from gvault.parser.error_handling.parser_exceptions import (  # type: ignore
 class TestParserValidator:
     def setup_method(self) -> None:
         self.mock_parse_args: MagicMock = MagicMock(spec=argparse.Namespace)
-        self.parser_validator: ParserValidator = (
-            ParserValidatorFactory.create_validator(self.mock_parse_args)
-        )
+        self.parser_validator: ParserValidator = ParserValidatorFactory.create_validator(self.mock_parse_args)
 
     def test_validate_calls(self) -> None:
         with patch.object(self.parser_validator, "_validate_io_paths") as mock_io_paths:
@@ -39,9 +37,7 @@ class TestParserValidator:
             mock_validate_paths.assert_any_call(self.mock_parse_args.output_paths)
 
     def test_validate_paths_calls(self):
-        with patch.object(
-            self.parser_validator, "_validate_path_exists"
-        ) as mock_exists, patch.object(
+        with patch.object(self.parser_validator, "_validate_path_exists") as mock_exists, patch.object(
             self.parser_validator, "_validate_path_type"
         ) as mock_type:
             self.parser_validator._validate_paths(["/file1.txt", "/file2.txt"])

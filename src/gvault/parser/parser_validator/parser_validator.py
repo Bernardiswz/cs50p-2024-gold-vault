@@ -37,5 +37,5 @@ class ParserValidator:
             raise PathNotFoundError(path)
 
     def _validate_path_type(self, path: str) -> None:
-        if not os.path.isfile(path) or os.path.isdir(path) or os.path.islink(path):
+        if not os.path.isfile(path) and not os.path.isdir(path) and not os.path.islink(path):
             raise InvalidPathTypeError(path)

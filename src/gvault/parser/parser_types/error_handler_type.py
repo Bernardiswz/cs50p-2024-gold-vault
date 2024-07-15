@@ -1,9 +1,10 @@
-from typing import Protocol
+from typing import Protocol, runtime_checkable
 
 
 __all__ = ["ErrorHandler"]
 
 
+@runtime_checkable
 class ErrorHandler(Protocol):
     # Static method intended
     def _parser_exit(self, message: str = "") -> None:

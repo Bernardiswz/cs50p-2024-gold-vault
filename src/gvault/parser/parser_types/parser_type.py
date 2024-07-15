@@ -1,10 +1,11 @@
 import argparse
-from typing import Protocol
+from typing import Protocol, runtime_checkable
 
 
 __all__ = ["Parser"]
 
 
+@runtime_checkable
 class Parser(Protocol):
     def parse_args(self) -> argparse.Namespace:
         ...

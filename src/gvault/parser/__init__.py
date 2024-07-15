@@ -5,7 +5,7 @@ from .get import get_parser
 from . import (
     error_handling,
     factories,
-    types,
+    parser_types,
 )
 
 
@@ -14,6 +14,6 @@ __all__ = [
     "factories",
     "Parser",
     "ParserValidator",
-    "types",
+    "parser_types",
     "get_parser"
 ]
