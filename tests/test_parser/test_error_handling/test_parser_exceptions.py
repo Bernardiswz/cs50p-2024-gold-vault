@@ -11,6 +11,9 @@ from gvault.parser.error_handling.parser_exceptions import (  # type: ignore
 )
 
 
+__all__ = ["TestParserExceptions"]
+
+
 class TestParserExceptions:
     def test_paths_list_len_error(self) -> None:
         with pytest.raises(PathsListLenError) as excinfo:

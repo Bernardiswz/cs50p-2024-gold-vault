@@ -4,6 +4,9 @@ from gvault.parser import Parser  # type: ignore
 from gvault.parser import ParserValidator  # type: ignore
 
 
+__all__ = ["TestTypes"]
+
+
 class TestTypes:
     def test_error_handler_type(self) -> None:
         assert isinstance(ErrorHandler, parser_types.ErrorHandler)

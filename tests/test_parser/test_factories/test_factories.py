@@ -7,6 +7,9 @@ from gvault.parser.parser_validator import ParserValidator  # type: ignore
 from gvault.parser.factories import ErrorHandlerFactory, ParserFactory, ParserValidatorFactory  # type: ignore
 
 
+__all__ = ["TestFactories"]
+
+
 class TestFactories:
     PARSER_INSTANCE_ARGV: List[str] = ["script.py", "-e", "file.py", "-o", "output_file.py"]
 

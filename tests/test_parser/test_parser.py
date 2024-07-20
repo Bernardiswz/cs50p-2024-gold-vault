@@ -5,6 +5,9 @@ from gvault.parser.factories import ParserFactory  # type: ignore
 from gvault.parser.parser_types import Parser  # type: ignore
 
 
+__all__ = ["TestParser"]
+
+
 class TestParser:
     @pytest.fixture(autouse=True)
     def setup_method(self, parser: Parser, monkeypatch: pytest.MonkeyPatch) -> None:

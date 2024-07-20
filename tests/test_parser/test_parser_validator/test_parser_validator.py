@@ -11,7 +11,11 @@ from gvault.parser.error_handling.parser_exceptions import (  # type: ignore
 )
 
 
+__all__ = ["TestParserValidator"]
+
+
 class TestParserValidator:
+    @pytest.fixture(autouse=True)
     def setup_method(self) -> None:
         self.mock_parse_args: MagicMock = MagicMock(spec=argparse.Namespace)
         self.parser_validator: ParserValidator = ParserValidatorFactory.create_validator(self.mock_parse_args)

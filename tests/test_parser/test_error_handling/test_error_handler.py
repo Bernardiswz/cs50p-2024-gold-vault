@@ -1,5 +1,6 @@
 import pytest
-from typing import List
+from typing import Any, Generator
+from unittest.mock import AsyncMock, patch, MagicMock
 from _pytest.capture import CaptureResult  # Type hinting
 from gvault.parser.parser_types import ErrorHandler  # type: ignore
 from gvault.parser.factories import ErrorHandlerFactory  # type: ignore
@@ -11,6 +12,9 @@ from gvault.parser.error_handling.error_messages import (  # type: ignore
 )
 
 
+__all__ = ["TestErrorHandler"]
+
+
 class TestErrorHandler:
     @pytest.fixture(autouse=True)
     def setup_method(self, error_handler: ErrorHandler) -> None:
@@ -20,31 +24,31 @@ class TestErrorHandler:
     def error_handler(self) -> ErrorHandler:
         return ErrorHandlerFactory.create_handler()
 
+    def assert_err_message_in_outerr(self, capsys: pytest.CaptureFixture, error_message: str) -> None:
+        captured: CaptureResult = capsys.readouterr()
+        assert error_message in captured.out or error_message in captured.err
+
     def test_expected_exit_status(self, capsys: pytest.CaptureFixture) -> None:
         with pytest.raises(SystemExit) as excinfo:
             self.error_handler_instance._parser_exit()
+
         assert excinfo.type == SystemExit
         assert excinfo.value.code == 1
-
-        captured: CaptureResult = capsys.readouterr()
-        assert USAGE in captured.out
+        self.assert_err_message_in_outerr(capsys, USAGE)
 
     @pytest.mark.parametrize("path", ["path_1.py", "path_2/file_1.py"])
     def test_handle_invalid_path_type(self, capsys: pytest.CaptureFixture, path: str) -> None:
         with pytest.raises(SystemExit):
             self.error_handler_instance.handle_invalid_path_type(INVALID_PATH_TYPE_ERROR.format(path))
-            captured: CaptureResult = capsys.readouterr()
-            assert INVALID_PATH_TYPE_ERROR.format(path) in captured
+        self.assert_err_message_in_outerr(capsys, INVALID_PATH_TYPE_ERROR.format(path))
 
     def test_handle_paths_list_len(self, capsys: pytest.CaptureFixture) -> None:
         with pytest.raises(SystemExit):
             self.error_handler_instance.handle_paths_list_len_error()
-            captured: CaptureResult = capsys.readouterr()
-            assert PATHS_LIST_LEN_ERROR in captured
+        self.assert_err_message_in_outerr(capsys, PATHS_LIST_LEN_ERROR)
 
     @pytest.mark.parametrize("path", ["path_1.py", "path_2/file_1.py"])
     def test_handle_path_not_found(self, capsys: pytest.CaptureFixture, path: str) -> None:
         with pytest.raises(SystemExit):
             self.error_handler_instance.handle_path_not_found(PATH_NOT_FOUND_ERROR.format(path))
-            captured: CaptureResult = capsys.readouterr()
-            assert PATH_NOT_FOUND_ERROR.format(path) in captured
+        self.assert_err_message_in_outerr(capsys, PATH_NOT_FOUND_ERROR.format(path))
