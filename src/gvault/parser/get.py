@@ -2,24 +2,16 @@ import argparse
 from typing import Union
 
 
-from .error_handling.parser_exceptions import (
-    PathsListLenError,
-    PathNotFoundError,
-    InvalidPathTypeError
-)
+from .error_handling.parser_exceptions import PathsListLenError, PathNotFoundError, InvalidPathTypeError
 
 
 from .factories import (
     ErrorHandlerFactory,
-    ParserFactory, 
+    ParserFactory,
     ParserValidatorFactory,
 )
 
-from .parser_types import (
-    ErrorHandler,
-    Parser,
-    ParserValidator
-)
+from .parser_types import ErrorHandler, Parser, ParserValidator
 
 
 __all__ = ["get_parser"]

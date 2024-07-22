@@ -9,11 +9,4 @@ from . import (
 )
 
 
-__all__ = [
-    "error_handling",
-    "factories",
-    "Parser",
-    "ParserValidator",
-    "parser_types",
-    "get_parser"
-]
+__all__ = ["error_handling", "factories", "Parser", "ParserValidator", "parser_types", "get_parser"]

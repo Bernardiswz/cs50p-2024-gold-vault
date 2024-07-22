@@ -32,19 +32,18 @@ class TestParserValidator:
         with patch.object(
             self.parser_validator, "_validate_io_paths_list_len"
         ) as mock_validate_io_paths_list_len, patch.object(
-            self.parser_validator, "_validate_paths"
-        ) as mock_validate_paths:
+            self.parser_validator, "_validate_input_paths"
+        ) as mock_validate_input_paths:
             self.parser_validator._validate_io_paths()
 
             mock_validate_io_paths_list_len.assert_called_once()
-            mock_validate_paths.assert_any_call(self.mock_parse_args.input_paths)
-            mock_validate_paths.assert_any_call(self.mock_parse_args.output_paths)
+            mock_validate_input_paths.assert_any_call(self.mock_parse_args.input_paths)
 
     def test_validate_paths_calls(self):
         with patch.object(self.parser_validator, "_validate_path_exists") as mock_exists, patch.object(
             self.parser_validator, "_validate_path_type"
         ) as mock_type:
-            self.parser_validator._validate_paths(["/file1.txt", "/file2.txt"])
+            self.parser_validator._validate_input_paths(["/file1.txt", "/file2.txt"])
             mock_exists.assert_any_call("/file1.txt")
             mock_exists.assert_any_call("/file2.txt")
             mock_type.assert_any_call("/file1.txt")
@@ -101,7 +100,7 @@ class TestParserValidator:
             self.parser_validator._validate_path_type("/symlink")
             mock_islink.assert_called_once_with("/symlink")
 
-    def test_validate_paths_valid(self) -> None:
+    def test_validate_input_paths_valid(self) -> None:
         paths_list: List[str] = ["/path/to/input1", "/path/to/input2"]
 
         # Valid paths case (None return)
@@ -110,14 +109,14 @@ class TestParserValidator:
         ) as mock_validate_path_exists, patch.object(
             self.parser_validator, "_validate_path_type", return_value=None
         ) as mock_validate_path_type:
-            self.parser_validator._validate_paths(paths_list)
+            self.parser_validator._validate_input_paths(paths_list)
 
             # Assert _validate_path_exists is called with each path
             for path in paths_list:
                 mock_validate_path_exists.assert_any_call(path)
                 mock_validate_path_type.assert_any_call(path)
 
-    def test_validate_paths_invalid_path_exists(self) -> None:
+    def test_validate_input_paths_invalid_path_exists(self) -> None:
         paths_list = ["/invalid/path"]
 
         # Invalid path should raise PathNotFoundError
@@ -129,12 +128,12 @@ class TestParserValidator:
             self.parser_validator, "_validate_path_type"
         ) as mock_validate_path_type:
             with pytest.raises(PathNotFoundError):
-                self.parser_validator._validate_paths(paths_list)
+                self.parser_validator._validate_input_paths(paths_list)
 
             mock_validate_path_exists.assert_called_once_with("/invalid/path")
             mock_validate_path_type.assert_not_called()
 
-    def test_validate_paths_invalid_path_type(self) -> None:
+    def test_validate_input_paths_invalid_path_type(self) -> None:
         paths_list = ["/invalid/path"]
 
         # Invalid path type should raise InvalidPathTypeError
@@ -146,7 +145,7 @@ class TestParserValidator:
             side_effect=InvalidPathTypeError("/invalid/path"),
         ) as mock_validate_path_type:
             with pytest.raises(InvalidPathTypeError):
-                self.parser_validator._validate_paths(paths_list)
+                self.parser_validator._validate_input_paths(paths_list)
 
             mock_validate_path_exists.assert_called_once_with("/invalid/path")
             mock_validate_path_type.assert_called_once_with("/invalid/path")

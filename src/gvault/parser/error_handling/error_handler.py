@@ -1,10 +1,5 @@
 import sys
-from .error_messages import (
-    INVALID_PATH_TYPE_ERROR,
-    PATHS_LIST_LEN_ERROR,
-    PATH_NOT_FOUND_ERROR,
-    USAGE
-)
+from .error_messages import INVALID_PATH_TYPE_ERROR, PATHS_LIST_LEN_ERROR, PATH_NOT_FOUND_ERROR, USAGE
 
 
 __all__ = ["ErrorHandler"]

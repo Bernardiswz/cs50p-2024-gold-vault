@@ -63,11 +63,11 @@ class TestParser:
         [
             (
                 ["script.py", "-e", "file.py", "-o", "output_file.py"],
-                {"input": ["file.py"], "output": ["output_file.py"]},
+                {"input_paths": ["file.py"], "output_paths": ["output_file.py"]},
             ),
             (
                 ["script.py", "-e", "file.py", "file_2.py", "-o", "output_file.py", "output_file_2.py"],
-                {"input": ["file.py", "file_2.py"], "output": ["output_file.py", "output_file_2.py"]},
+                {"input_paths": ["file.py", "file_2.py"], "output_paths": ["output_file.py", "output_file_2.py"]},
             ),
         ],
     )
@@ -75,8 +75,8 @@ class TestParser:
         self._set_monkeypatch_argv(argv)
         args: argparse.Namespace = self.parser_instance.parse_args()
 
-        assert args.input == expected["input"]
-        assert args.output == expected["output"]
+        assert args.input_paths == expected["input_paths"]
+        assert args.output_paths == expected["output_paths"]
 
     @pytest.mark.parametrize("argv", [["script.py", "input_file.txt", "-o", "output_file.txt"]])
     def test_missing_usage_type_flag(self, argv: List[str]) -> None:
