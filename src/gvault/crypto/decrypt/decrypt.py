@@ -6,11 +6,10 @@ __all__ = ["decrypt_file"]
 
 
 def decrypt_file(input_path: str, output_path: str, password):
-    data: bytes = read_file(input_path)
-    key: bytes = derive_key(password)
-
-    # Extract IV and encrypted data
-    iv: bytes = data[:16]
-    encrypted_data: bytes = data[16:]
-    decrypted_data: bytes = decrypt_data(encrypted_data, key, iv)
+    encrypted_data: bytes = read_file(input_path)
+    salt: bytes = encrypted_data[:16]
+    iv: bytes = encrypted_data[16:32]
+    ciphertext: bytes = encrypted_data[32:]
+    key = derive_key(password, salt)
+    decrypted_data: bytes = decrypt_data(ciphertext, key, iv)
     write_file(output_path, decrypted_data)
