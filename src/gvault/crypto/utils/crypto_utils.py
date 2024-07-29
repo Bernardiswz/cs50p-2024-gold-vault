@@ -26,18 +26,26 @@ def derive_key(password: str, salt: bytes, iterations: int = 100000) -> bytes:
 
 
 def encrypt_data(file_data: bytes, key: bytes, iv: bytes) -> bytes:
-    cipher: Cipher = Cipher(algorithms.AES(key), modes.CBC(iv))
+    cipher: Cipher = get_cipher(key, iv)
     encryptor: CipherContext = cipher.encryptor()
-    padder: PaddingContext = padding.PKCS7(algorithms.AES.block_size).padder()
+    padder: PaddingContext = get_padder().padder()
     padded_data: bytes = padder.update(file_data) + padder.finalize()
     ciphertext: bytes = encryptor.update(padded_data) + encryptor.finalize()
     return ciphertext
 
 
 def decrypt_data(encrypted_data: bytes, key: bytes, iv: bytes) -> bytes:
-    cipher: Cipher = Cipher(algorithms.AES(key), modes.CBC(iv))
+    cipher: Cipher = get_cipher(key, iv)
     decryptor: AEADDecryptionContext = cipher.decryptor()
     decrypted_padded_data: bytes = decryptor.update(encrypted_data) + decryptor.finalize()
-    unpadder: PaddingContext = padding.PKCS7(algorithms.AES.block_size).unpadder()
+    unpadder: PaddingContext = get_padder().unpadder()
     decrypted_data: bytes = unpadder.update(decrypted_padded_data) + unpadder.finalize()
     return decrypted_data
+
+
+def get_cipher(key: bytes, iv: bytes) -> Cipher:
+    return Cipher(algorithms.AES(key), modes.CBC(iv))
+
+
+def get_padder() -> PaddingContext:
+    return padding.PKCS7(algorithms.AES.block_size)

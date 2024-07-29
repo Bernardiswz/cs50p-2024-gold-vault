@@ -45,7 +45,6 @@ def patches() -> Generator[Dict[str, Any], Any, None]:
 class TestGet:
     def test_get_parser_success(self, patches) -> None:
         result: Union[argparse.Namespace, None] = get_parser()
-
         patches["mock_parser"].parse_args.assert_called_once()
         patches["mock_create_validator"].assert_called_once_with(patches["mock_parse_args"])
         patches["mock_validator"].validate.assert_called_once()
@@ -55,31 +54,28 @@ class TestGet:
         patches["mock_handler"].handle_path_not_found.assert_not_called()
 
     def test_get_parser_paths_list_len_error(self, patches) -> None:
-        patches["mock_validator"].validate.side_effect = PathsListLenError
-
+        paths_list_len_error: PathsListLenError = PathsListLenError()
+        patches["mock_validator"].validate.side_effect = paths_list_len_error
         result: Union[argparse.Namespace, None] = get_parser()
-
         patches["mock_parser"].parse_args.assert_called_once()
         patches["mock_validator"].validate.assert_called_once()
-        patches["mock_handler"].handle_paths_list_len_error.assert_called_once()
+        patches["mock_handler"].handle_paths_list_len_error.assert_called_once_with(paths_list_len_error)
         assert result is None
 
     def test_get_parser_path_not_found_error(self, patches) -> None:
-        patches["mock_validator"].validate.side_effect = PathNotFoundError(path="some/path")
-
+        path_not_found_error: PathNotFoundError = PathNotFoundError(path="some/path")
+        patches["mock_validator"].validate.side_effect = path_not_found_error
         result: Union[argparse.Namespace, None] = get_parser()
-
         patches["mock_parser"].parse_args.assert_called_once()
         patches["mock_validator"].validate.assert_called_once()
-        patches["mock_handler"].handle_path_not_found.assert_called_once_with("some/path")
+        patches["mock_handler"].handle_path_not_found.assert_called_once_with(path_not_found_error)
         assert result is None
 
     def test_get_parser_invalid_path_type_error(self, patches) -> None:
-        patches["mock_validator"].validate.side_effect = InvalidPathTypeError(path="some/path")
-
+        invalid_path_type_error: InvalidPathTypeError = InvalidPathTypeError(path="some/path")
+        patches["mock_validator"].validate.side_effect = invalid_path_type_error
         result: Union[argparse.Namespace, None] = get_parser()
-
         patches["mock_parser"].parse_args.assert_called_once()
         patches["mock_validator"].validate.assert_called_once()
-        patches["mock_handler"].handle_invalid_path_type.assert_called_once_with("some/path")
+        patches["mock_handler"].handle_invalid_path_type.assert_called_once_with(invalid_path_type_error)
         assert result is None

@@ -1,5 +1,6 @@
 import sys
-from .error_messages import INVALID_PATH_TYPE_ERROR, PATHS_LIST_LEN_ERROR, PATH_NOT_FOUND_ERROR, USAGE
+from .error_messages import USAGE
+from .parser_exceptions import PathsListLenError, PathNotFoundError, InvalidPathTypeError
 
 
 __all__ = ["ErrorHandler"]
@@ -13,11 +14,11 @@ class ErrorHandler:
             print(message)
         sys.exit(1)
 
-    def handle_invalid_path_type(self, path: str) -> None:
-        self._parser_exit(INVALID_PATH_TYPE_ERROR.format(path))
+    def handle_invalid_path_type(self, invalid_path_type_err: InvalidPathTypeError) -> None:
+        self._parser_exit(invalid_path_type_err.message)
 
-    def handle_paths_list_len_error(self) -> None:
-        self._parser_exit(PATHS_LIST_LEN_ERROR)
+    def handle_paths_list_len_error(self, paths_list_len_error: PathsListLenError) -> None:
+        self._parser_exit(paths_list_len_error.message)
 
-    def handle_path_not_found(self, path: str) -> None:
-        self._parser_exit(PATH_NOT_FOUND_ERROR.format(path))
+    def handle_path_not_found(self, path_not_found_error: PathNotFoundError) -> None:
+        self._parser_exit(path_not_found_error.message)
