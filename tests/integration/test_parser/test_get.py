@@ -57,7 +57,7 @@ class TestGet:
     def _set_monkeypatch_argv(self, argv: List[str]) -> None:
         self.monkeypatch.setattr("sys.argv", argv)
 
-    def assert_err_message_in_outerr(self, error_message: str, capsys: pytest.CaptureFixture) -> None:
+    def _assert_err_message_in_outerr(self, error_message: str, capsys: pytest.CaptureFixture) -> None:
         captured: CaptureResult = capsys.readouterr()
         assert error_message in captured.out or error_message in captured.err
 
@@ -92,8 +92,18 @@ class TestGet:
         self._set_monkeypatch_argv(argv)
         parse_args: Union[argparse.Namespace, None] = get_parser()
         assert isinstance(parse_args, argparse.Namespace)
+        self._assert_expected_parse_args_io_paths(parse_args, expected)
+        self._assert_expected_parse_args_flags(parse_args, expected)
+
+    def _assert_expected_parse_args_io_paths(
+            self, 
+            parse_args: argparse.Namespace, 
+            expected: Dict[str, List[str]]
+        ) -> None:
         assert parse_args.input_paths == expected["input_paths"]
         assert parse_args.output_paths == expected["output_paths"]
+
+    def _assert_expected_parse_args_flags(self, parse_args: argparse.Namespace, expected: Dict[str, List[str]]) -> None:
         assert parse_args.encrypt == expected["encrypt"]
         assert parse_args.decrypt == expected["decrypt"]
 
@@ -104,9 +114,8 @@ class TestGet:
         with pytest.raises(SystemExit) as excinfo:
             parse_args = get_parser()
         assert parse_args is None
-        assert excinfo.type == SystemExit
-        assert excinfo.value.code == 2
-        self.assert_err_message_in_outerr(USAGE, capsys)
+        self._assert_excinfo_expected(excinfo, expected_code=2)
+        self._assert_err_message_in_outerr(USAGE, capsys)
 
     @pytest.mark.parametrize(
         "argv",
@@ -121,9 +130,8 @@ class TestGet:
         with pytest.raises(SystemExit) as excinfo:
             parse_args = get_parser()
         assert parse_args is None
-        assert excinfo.type == SystemExit
-        assert excinfo.value.code == 1
-        self.assert_err_message_in_outerr(PATHS_LIST_LEN_ERROR, capsys)
+        self._assert_excinfo_expected(excinfo)
+        self._assert_err_message_in_outerr(PATHS_LIST_LEN_ERROR, capsys)
 
     @pytest.mark.parametrize(
         "argv, nonexisting_path",
@@ -146,6 +154,14 @@ class TestGet:
         with pytest.raises(SystemExit) as excinfo:
             parse_args = get_parser()
         assert parse_args is None
-        assert excinfo.type == SystemExit
-        assert excinfo.value.code == 1
-        self.assert_err_message_in_outerr(PATH_NOT_FOUND_ERROR.format(nonexisting_path), capsys)
+        self._assert_excinfo_expected(excinfo)
+        self._assert_err_message_in_outerr(PATH_NOT_FOUND_ERROR.format(nonexisting_path), capsys)
+
+    def _assert_excinfo_expected(
+            self, 
+            excinfo: pytest.ExceptionInfo, 
+            expected_code: int = 1, 
+            expected_type: Exception = SystemExit
+        ) -> None:
+        assert excinfo.type == expected_type
+        assert excinfo.value.code == expected_code

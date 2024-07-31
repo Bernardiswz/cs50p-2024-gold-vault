@@ -74,7 +74,6 @@ class TestParser:
     def test_expected_input_output_parser_attr(self, argv: List[str], expected: Dict[str, List[str]]) -> None:
         self._set_monkeypatch_argv(argv)
         args: argparse.Namespace = self.parser_instance.parse_args()
-
         assert args.input_paths == expected["input_paths"]
         assert args.output_paths == expected["output_paths"]
 

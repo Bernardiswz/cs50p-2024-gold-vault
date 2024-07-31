@@ -52,7 +52,6 @@ class TestParserValidator:
     def test_validate_io_paths_list_len_invalid(self) -> None:
         self.mock_parse_args.input_paths = ["/path1"]
         self.mock_parse_args.output_paths = ["/path1", "/path2"]
-
         with pytest.raises(PathsListLenError):
             self.parser_validator._validate_io_paths_list_len()
 
@@ -65,9 +64,7 @@ class TestParserValidator:
         with patch("os.path.exists") as mock_exists:
             # Path exists if path == "/existing/path"
             mock_exists.side_effect = lambda x: x == "/existing/path"
-
             self.parser_validator._validate_path_exists("/existing/path")
-
             # Testing for non-existing path
             with pytest.raises(PathNotFoundError):
                 self.parser_validator._validate_path_exists("/non_existing/path")
@@ -78,7 +75,6 @@ class TestParserValidator:
         ) as mock_isdir, patch("os.path.islink", return_value=False) as mock_islink:
             with pytest.raises(InvalidPathTypeError):
                 self.parser_validator._validate_path_type(";")
-
             mock_isfile.assert_called_once_with(";")
             mock_isdir.assert_called_once_with(";")
             mock_islink.assert_called_once_with(";")

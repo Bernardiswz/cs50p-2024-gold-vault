@@ -11,7 +11,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 
-__all__ = ["derive_key", "encrypt_data", "decrypt_data"]
+__all__ = ["decrypt_data", "derive_key", "encrypt_data", "get_cipher", "get_padder"]
 
 
 def derive_key(password: str, salt: bytes, iterations: int = 100000) -> bytes:
