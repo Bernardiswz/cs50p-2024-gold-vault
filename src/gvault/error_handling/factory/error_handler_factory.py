@@ -1,4 +1,4 @@
-from gvault.error_handling.error_handler import ErrorHandler
+from ..error_handler.error_handler import ErrorHandler
 
 
 __all__ = ["ErrorHandlerFactory"]

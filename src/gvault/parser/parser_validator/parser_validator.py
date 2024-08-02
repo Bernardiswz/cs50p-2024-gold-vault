@@ -1,7 +1,11 @@
 import argparse
 import os
 from typing import List
-from ..error_handling.parser_exceptions import InvalidPathTypeError, PathsListLenError, PathNotFoundError
+from gvault.error_handling.exceptions.parser_exceptions import (
+    InvalidPathTypeError, 
+    PathsListLenError, 
+    PathNotFoundError
+)
 
 
 __all__ = ["ParserValidator"]

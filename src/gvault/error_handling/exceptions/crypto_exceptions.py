@@ -1,4 +1,4 @@
-from .error_messages import CYCLIC_LINK_ERROR, DECRYPTION_ERROR, LINK_RECURSION_DEPTH_ERROR
+from ..messages.crypto_messages import CYCLIC_LINK_ERROR, DECRYPTION_ERROR, LINK_RECURSION_DEPTH_ERROR
 
 
 __all__ = ["CyclicLinkError", "DecryptionError", "LinkRecursionDepthError"]

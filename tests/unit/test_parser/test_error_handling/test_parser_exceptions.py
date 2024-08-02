@@ -1,10 +1,10 @@
 import pytest
-from gvault.parser.error_handling.error_messages import (  # type: ignore
+from gvault.error_handling.messages.parser_messages import (  # type: ignore
     PATHS_LIST_LEN_ERROR,
     PATH_NOT_FOUND_ERROR,
     INVALID_PATH_TYPE_ERROR,
 )
-from gvault.parser.error_handling.parser_exceptions import (  # type: ignore
+from gvault.error_handling.exceptions.parser_exceptions import (  # type: ignore
     PathsListLenError,
     PathNotFoundError,
     InvalidPathTypeError,

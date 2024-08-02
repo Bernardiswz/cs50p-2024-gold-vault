@@ -4,7 +4,7 @@ from typing import List
 from unittest.mock import patch, MagicMock
 from gvault.parser.factories import ParserValidatorFactory  # type: ignore
 from gvault.parser.parser_types import ParserValidator  # type: ignore
-from gvault.parser.error_handling.parser_exceptions import (  # type: ignore
+from gvault.error_handling.exceptions.parser_exceptions import (  # type: ignore
     PathsListLenError,
     PathNotFoundError,
     InvalidPathTypeError,
@@ -39,7 +39,7 @@ class TestParserValidator:
             mock_validate_io_paths_list_len.assert_called_once()
             mock_validate_input_paths.assert_any_call(self.mock_parse_args.input_paths)
 
-    def test_validate_paths_calls(self):
+    def test_validate_paths_calls(self) -> None:
         with patch.object(self.parser_validator, "_validate_path_exists") as mock_exists, patch.object(
             self.parser_validator, "_validate_path_type"
         ) as mock_type:
@@ -69,7 +69,7 @@ class TestParserValidator:
             with pytest.raises(PathNotFoundError):
                 self.parser_validator._validate_path_exists("/non_existing/path")
 
-    def test_validate_invalid_path_type(self):
+    def test_validate_invalid_path_type(self) -> None:
         with patch("os.path.isfile", return_value=False) as mock_isfile, patch(
             "os.path.isdir", return_value=False
         ) as mock_isdir, patch("os.path.islink", return_value=False) as mock_islink:

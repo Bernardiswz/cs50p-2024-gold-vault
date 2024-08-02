@@ -2,9 +2,8 @@ import argparse
 import pytest
 from typing import List, Type
 from gvault.parser import Parser  # type: ignore
-from gvault.parser.error_handling import ErrorHandler  # type: ignore
 from gvault.parser.parser_validator import ParserValidator  # type: ignore
-from gvault.parser.factories import ErrorHandlerFactory, ParserFactory, ParserValidatorFactory  # type: ignore
+from gvault.parser.factories import ParserFactory, ParserValidatorFactory  # type: ignore
 
 
 __all__ = ["TestFactories"]
@@ -33,10 +32,6 @@ class TestFactories:
     def test_parser_factory(self) -> None:
         parser: Parser = ParserFactory().create_parser()
         assert isinstance(parser, Parser)
-
-    def test_error_handler_factory(self) -> None:
-        error_handler: ErrorHandler = ErrorHandlerFactory().create_handler()
-        assert isinstance(error_handler, ErrorHandler)
 
     def test_validator_factory(self) -> None:
         validator: ParserValidator = ParserValidatorFactory().create_validator(self.parsed_args)

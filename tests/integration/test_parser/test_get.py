@@ -4,7 +4,7 @@ import pytest
 from typing import Any, Dict, Generator, List, Union
 from _pytest.capture import CaptureResult
 from gvault.parser import get_parser  # type: ignore
-from gvault.parser.error_handling.error_messages import (  # type: ignore
+from gvault.error_handling.messages.parser_messages import (  # type: ignore
     USAGE,
     PATHS_LIST_LEN_ERROR,
     PATH_NOT_FOUND_ERROR,

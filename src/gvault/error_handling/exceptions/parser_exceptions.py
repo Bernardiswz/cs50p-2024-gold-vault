@@ -1,4 +1,4 @@
-from .error_messages import PATHS_LIST_LEN_ERROR, PATH_NOT_FOUND_ERROR, INVALID_PATH_TYPE_ERROR
+from ..messages.parser_messages import PATHS_LIST_LEN_ERROR, PATH_NOT_FOUND_ERROR, INVALID_PATH_TYPE_ERROR
 
 
 __all__ = ["PathsListLenError", "PathNotFoundError", "InvalidPathTypeError"]

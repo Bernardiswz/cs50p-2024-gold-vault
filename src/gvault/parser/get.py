@@ -1,12 +1,17 @@
 import argparse
 from typing import Union
-from .error_handling.parser_exceptions import PathsListLenError, PathNotFoundError, InvalidPathTypeError
 from .factories import (
-    ErrorHandlerFactory,
     ParserFactory,
     ParserValidatorFactory,
 )
-from .parser_types import ErrorHandler, Parser, ParserValidator
+from .parser_types import Parser, ParserValidator
+from gvault.error_handling import ErrorHandlerFactory # type: ignore
+from gvault.error_handling.exceptions.parser_exceptions import ( # type: ignore
+    PathsListLenError, 
+    PathNotFoundError, 
+    InvalidPathTypeError
+)
+from gvault.error_handling.type import ErrorHandler # type: ignore
 
 
 __all__ = ["get_parser"]
@@ -21,9 +26,9 @@ def get_parser() -> Union[argparse.Namespace, None]:
         parser_validator.validate()
         return parse_args
     except PathsListLenError as e:
-        error_handler.handle_paths_list_len_error(e)
+        error_handler.handle_parser_exception(e)
     except PathNotFoundError as e:
-        error_handler.handle_path_not_found(e)
+        error_handler.handle_parser_exception(e)
     except InvalidPathTypeError as e:
-        error_handler.handle_invalid_path_type(e)
+        error_handler.handle_parser_exception(e)
     return None
