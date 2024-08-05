@@ -1,6 +1,6 @@
 import argparse
 import pytest
-from typing import List, Type
+from typing import List
 from gvault.parser import Parser  # type: ignore
 from gvault.parser.parser_validator import ParserValidator  # type: ignore
 from gvault.parser.factories import ParserFactory, ParserValidatorFactory  # type: ignore

@@ -11,6 +11,10 @@ from gvault.crypto.utils.crypto_utils import ( # type: ignore
     get_padder
 )
 
+
+__all__ = ["TestCryptoUtils"]
+
+
 class TestCryptoUtils:
     @pytest.fixture
     def common_data(self) -> Dict[str, Any]:

@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch
 from gvault.crypto.utils.link_processor import LinkProcessor # type: ignore
-from gvault.crypto.error_handling.exceptions import CyclicLinkError, LinkRecursionDepthError # type: ignore
+from gvault.error_handling.exceptions.crypto_exceptions import CyclicLinkError, LinkRecursionDepthError # type: ignore
 
 
 __all__ = ["TestLinkProcessor"]
