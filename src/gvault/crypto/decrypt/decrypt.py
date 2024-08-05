@@ -1,10 +1,10 @@
-from typing import Any, Dict, Tuple, Union
-from ..error_handling.exceptions import DecryptionError
+from typing import Tuple
 from ..utils.crypto_utils import derive_key, decrypt_data
 from ..utils.file_utils import read_file, write_file
+from gvault.error_handling.exceptions.crypto_exceptions import DecryptionError # type: ignore
 
 
-__all__ = ["decrypt_file"]
+__all__ = ["decrypt_file, get_salt_iv, get_ciphertext"]
 
 
 def decrypt_file(input_path: str, output_path: str, password: str) -> None:

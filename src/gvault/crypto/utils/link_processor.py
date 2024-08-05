@@ -1,5 +1,5 @@
 import os
-from ..error_handling.exceptions import CyclicLinkError, LinkRecursionDepthError
+from gvault.error_handling.exceptions.crypto_exceptions import CyclicLinkError, LinkRecursionDepthError
 
 
 __all__ = ["LinkProcessor"]

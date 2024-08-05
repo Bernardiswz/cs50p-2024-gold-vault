@@ -34,7 +34,7 @@ class Mocks:
 
 @pytest.fixture
 def patches() -> Generator[Mocks, Any, None]:
-    mocks = Mocks()
+    mocks: Mocks = Mocks()
     yield mocks
     mocks.stop_patches()
 

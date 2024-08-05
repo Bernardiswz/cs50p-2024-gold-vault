@@ -4,7 +4,7 @@ from ..utils.crypto_utils import derive_key, encrypt_data
 from ..utils.file_utils import read_file, write_file
 
 
-__all__ = ["encrypt_file"]
+__all__ = ["encrypt_file", "generate_salt_iv"]
 
 
 def encrypt_file(input_path: str, output_path: str, password: str) -> None:
