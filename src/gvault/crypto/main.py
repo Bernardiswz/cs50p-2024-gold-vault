@@ -1,8 +1,12 @@
 import argparse
 from .crypto import Crypto
-from gvault.error_handling import ErrorHandlerFactory
-from gvault.error_handling.type import ErrorHandler
-from gvault.error_handling.exceptions.crypto_exceptions import CyclicLinkError, DecryptionError, LinkRecursionDepthError
+from gvault.error_handling import ErrorHandlerFactory  # type: ignore
+from gvault.error_handling.type import ErrorHandler  # type: ignore
+from gvault.error_handling.exceptions.crypto_exceptions import (  # type: ignore
+    CyclicLinkError,
+    DecryptionError,
+    LinkRecursionDepthError,
+)
 
 
 def crypto_main(parse_args: argparse.Namespace) -> None:

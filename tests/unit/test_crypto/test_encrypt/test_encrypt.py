@@ -9,7 +9,7 @@ __all__ = ["TestEncrypt"]
 
 
 class EncryptFilesSetup:
-    TEST_DIR: str = "test_dir"
+    TEST_DIR: str = "encrypt_dir"
     TEST_FILE: str = os.path.join(TEST_DIR, "test_file.txt")
     OUTPUT_TEST_FILE: str = os.path.join(TEST_DIR, "output_file.txt")
     FILE_PATHS: Set[str] = {TEST_FILE, OUTPUT_TEST_FILE}

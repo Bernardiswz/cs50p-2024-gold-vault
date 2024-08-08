@@ -30,7 +30,7 @@ class Crypto:
             case "directory":
                 self._process_dir(input_path, output_path)
             case "symlink":
-                self._process_path(self._get_link(input_path))
+                self._process_path(self._get_link(input_path), output_path)
             case _:
                 return
 
@@ -46,17 +46,29 @@ class Crypto:
 
     def _should_write_output_path(self, path: str) -> bool:
         if os.path.exists(path):
-            return confirm_overwrite_path(path)
+            return self._confirm_overwrite_path(path)
         return True    
 
+    def _confirm_overwrite_path(self, path: str) -> bool:
+        return confirm_overwrite_path(path)
+
     def _get_link(self, link_path: str) -> str:
+        return self._get_link_path(link_path)
+
+    def _get_link_path(self, link_path: str) -> str:
         self.link_processor.get_link_path(link_path)
 
     def _process_file(self, input_file_path: str, output_file_path: str) -> None:
         if self.parse_args.encrypt:
-            encrypt_file(input_file_path, output_file_path, self._get_password())
+            self._encrypt_file(input_file_path, output_file_path, self._get_password())
         elif self.parse_args.decrypt:
-            decrypt_file(input_file_path, output_file_path, self._get_password())
+            self._decrypt_file(input_file_path, output_file_path, self._get_password())
+
+    def _encrypt_file(self, input_file_path: str, output_file_path: str) -> None:
+        encrypt_file(input_file_path, output_file_path, self._get_password())
+
+    def _decrypt_file(self, input_file_path: str, output_file_path: str) -> None:
+        decrypt_file(input_file_path, output_file_path, self._get_password())
 
     def _get_password(self) -> str:
         return getpass("Enter your password:")

@@ -15,7 +15,7 @@ __all__ = ["TestGet"]
 
 
 class TestGet:
-    TEST_GET_DIRECTORY: str = "test_get_dir"
+    TEST_GET_DIRECTORY: str = "get_dir"
     TEST_GET_INNER_DIR: str = os.path.join(TEST_GET_DIRECTORY, "inner_directory")
     FILE1_PATH: str = os.path.join(TEST_GET_DIRECTORY, "file1.txt")
     FILE2_PATH: str = os.path.join(TEST_GET_DIRECTORY, "file2.txt")

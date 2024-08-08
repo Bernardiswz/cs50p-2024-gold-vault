@@ -13,7 +13,7 @@ ENCRYPTION_PASSWORD: str = "1965917"
 
 
 class DecryptFilesSetup:
-    TEST_DIR: str = "test_decrypt"
+    TEST_DIR: str = "decrypt dir"
     SAMPLE_FILE_PATH: str = os.path.join(TEST_DIR, "file.txt")
     SAMPLE_FILE_CONTENT: bytes = b"some content"
     ENCRYPTED_FILE_PATH: str = os.path.join(TEST_DIR, "encrypted_file.txt")
@@ -26,7 +26,8 @@ class DecryptFilesSetup:
         self._encrypt_sample_file()
 
     def _make_test_dir(self) -> None:
-        os.makedirs(self.TEST_DIR, exist_ok=True)
+        if not os.path.exists(self.TEST_DIR):
+            os.makedirs(self.TEST_DIR, exist_ok=True)
 
     def _write_sample_file(self) -> None:
         write_file(self.SAMPLE_FILE_PATH, self.SAMPLE_FILE_CONTENT)
