@@ -3,12 +3,12 @@ import pytest
 from cryptography.hazmat.primitives import padding
 from cryptography.hazmat.primitives.padding import PaddingContext
 from cryptography.hazmat.primitives.ciphers import Cipher
-from gvault.crypto.utils.crypto_utils import ( # type: ignore
-    decrypt_data, 
-    derive_key, 
-    encrypt_data, 
-    get_cipher, 
-    get_padder
+from gvault.crypto.utils.crypto_utils import (  # type: ignore
+    decrypt_data,
+    derive_key,
+    encrypt_data,
+    get_cipher,
+    get_padder,
 )
 
 
@@ -33,7 +33,7 @@ class TestCryptoUtils:
     def test_encrypt_data(self, common_data: Dict[str, Any]) -> None:
         encrypted_data = encrypt_data(common_data["file_data"], common_data["key"], common_data["iv"])
         assert isinstance(encrypted_data, bytes)
-        assert encrypted_data != common_data["file_data"] # Ensure data is encrypted
+        assert encrypted_data != common_data["file_data"]  # Ensure data is encrypted
 
     def test_decrypt_data(self, common_data: Dict[str, Any]) -> None:
         encrypted_data: bytes = encrypt_data(common_data["file_data"], common_data["key"], common_data["iv"])
