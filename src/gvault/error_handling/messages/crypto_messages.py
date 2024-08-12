@@ -1,3 +1,8 @@
+"""
+Contains the error messages to be used as attributes of the crypto package exceptions classes. Also used
+for printing and displaying output for user.
+"""
+
 __all__ = ["CYCLIC_LINK_ERROR", "DECRYPTION_ERROR", "LINK_RECURSION_DEPTH_ERROR"]
 
 

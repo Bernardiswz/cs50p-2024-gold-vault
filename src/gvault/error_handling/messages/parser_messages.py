@@ -1,3 +1,8 @@
+"""
+Contains the error messages to be used as attributes of the parser package's exceptions classes. Also used
+for printing and displaying output for user.
+"""
+
 __all__ = ["PATHS_LIST_LEN_ERROR", "PATH_NOT_FOUND_ERROR", "INVALID_PATH_TYPE_ERROR", "USAGE"]
 
 

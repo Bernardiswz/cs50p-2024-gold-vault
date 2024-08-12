@@ -10,14 +10,10 @@ from gvault.error_handling.exceptions.crypto_exceptions import (  # type: ignore
 
 
 def crypto_main(parse_args: argparse.Namespace) -> None:
-    crypto: Crypto = Crypto(parse_args)
-    error_handler: ErrorHandler = ErrorHandlerFactory.create_handler()
     try:
+        error_handler: ErrorHandler = ErrorHandlerFactory.create_handler()
+        crypto: Crypto = Crypto(parse_args)
         crypto.process_paths()
-    except CyclicLinkError as e:
-        error_handler.handle_crypto_exception(e)
-    except DecryptionError as e:
-        error_handler.handle_crypto_exception(e)
-    except LinkRecursionDepthError as e:
+    except (CyclicLinkError, DecryptionError, LinkRecursionDepthError) as e:
         error_handler.handle_crypto_exception(e)
     return None

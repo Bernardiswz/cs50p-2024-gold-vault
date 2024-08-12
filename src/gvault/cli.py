@@ -1,15 +1,15 @@
 import argparse
-import getpass
+from gvault.crypto import crypto_main
 from gvault.parser import get_parser # type: ignore
 
 
-def main() -> None:
+def cli_main() -> None:
     try:
         parse_args: argparse.Namespace = get_parser()
-        password: str = getpass.getpass("Password: ")
+        crypto_main(parse_args)
     except Exception:
         pass
 
 
 if __name__ == "__main__":
-    main()
+    cli_main()

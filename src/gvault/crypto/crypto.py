@@ -30,7 +30,8 @@ class Crypto:
             case "directory":
                 self._process_dir(input_path, output_path)
             case "symlink":
-                self._process_path(self._get_link(input_path), output_path)
+                resolved_path: str = self._get_link(input_path)
+                self._process_path(resolved_path, output_path)
             case _:
                 return
 
@@ -60,9 +61,9 @@ class Crypto:
 
     def _process_file(self, input_file_path: str, output_file_path: str) -> None:
         if self.parse_args.encrypt:
-            self._encrypt_file(input_file_path, output_file_path, self._get_password())
+            self._encrypt_file(input_file_path, output_file_path)
         elif self.parse_args.decrypt:
-            self._decrypt_file(input_file_path, output_file_path, self._get_password())
+            self._decrypt_file(input_file_path, output_file_path)
 
     def _encrypt_file(self, input_file_path: str, output_file_path: str) -> None:
         encrypt_file(input_file_path, output_file_path, self._get_password())
@@ -71,7 +72,7 @@ class Crypto:
         decrypt_file(input_file_path, output_file_path, self._get_password())
 
     def _get_password(self) -> str:
-        return getpass("Enter your password:")
+        return getpass("Password:")
 
     def _process_dir(self, input_dir: str, output_dir: str) -> None:
         for root, _, files in os.walk(input_dir):
