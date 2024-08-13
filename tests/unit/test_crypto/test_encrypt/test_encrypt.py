@@ -1,8 +1,8 @@
 import os
 import pytest
 from typing import Any, Dict, Generator, Set
-from gvault.crypto.encrypt import encrypt_file # type: ignore 
-from gvault.crypto.utils.file_utils import read_file # type: ignore
+from gvault.crypto.encrypt import encrypt_file  # type: ignore
+from gvault.crypto.utils.file_utils import read_file  # type: ignore
 
 
 __all__ = ["TestEncrypt"]

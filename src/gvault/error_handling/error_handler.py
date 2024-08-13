@@ -25,7 +25,7 @@ class ErrorHandler:
             message (str): Message to be outputted before calling sys.exit.
             code (int): Exit code to be given as argument to sys.exit.
         Raises:
-            SystemExit
+            SystemExit.
         """
         if message:
             print(message)
@@ -36,11 +36,19 @@ class ErrorHandler:
         Base method to handle default/generic/built-in exceptions, TODO
 
         Args:
-            exception (Exception)
+            exception (Exception).
         """
         pass
 
     def handle_parser_exception(self, parser_exception: Exception = None) -> None:
+        """
+        Prints USAGE message from parser messages and calls handler exit giving parser_exception's message attr as arg.
+
+        Attempts to get 'message' attribute from parser_exception and use it as arg to handler exit.
+
+        Args:
+            parser_exception (Exception): Custom exception class for parser errors.
+        """
         message: str = ""
         if parser_exception:
             message: Any = getattr(parser_exception, "message")
@@ -48,6 +56,12 @@ class ErrorHandler:
         self.handler_exit(message)
 
     def handle_crypto_exception(self, crypto_exception: Exception = None) -> None:
+        """
+        Calls handler_exit with message attribute from crypto_exception.
+
+        Args:
+            crypto_exception (Exception): Custom exception intended to use on the crypto package.
+        """
         message: str = ""
         if crypto_exception:
             message: Any = getattr(crypto_exception, "message")

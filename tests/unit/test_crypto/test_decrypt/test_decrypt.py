@@ -6,6 +6,7 @@ from gvault.crypto.encrypt import encrypt_file  # type: ignore
 from gvault.crypto.utils.file_utils import read_file, write_file  # type: ignore
 from gvault.error_handling.exceptions.crypto_exceptions import DecryptionError  # type: ignore
 
+
 __all__ = ["TestDecrypt"]
 
 

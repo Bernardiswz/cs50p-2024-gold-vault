@@ -10,7 +10,7 @@ def main() -> None:
     with open("mylink", "r") as s_link:
         print(s_link.read())
 
-    with open("hardlink","r") as r_link:
+    with open("hardlink", "r") as r_link:
         print(r_link.read())
 
     with open("link_chain", "a") as link_chain:

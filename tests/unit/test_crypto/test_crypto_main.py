@@ -34,7 +34,7 @@ class TestCryptoMain:
         patches.mock_create_handler.assert_called_once()
         patches.mock_process_paths.assert_called_once()
         patches.mock_handler.handle_crypto_exception.assert_not_called()
-   
+
     @pytest.mark.parametrize(
         "exception_instance",
         [CyclicLinkError("link_path"), DecryptionError("path"), LinkRecursionDepthError("link_path")],

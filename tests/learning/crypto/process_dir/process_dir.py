@@ -2,7 +2,7 @@ import os
 
 
 def process_dir(input_dir: str, output_dir: str) -> None:
-    for root, dirs, files in os.walk(input_dir):
+    for root, _, files in os.walk(input_dir):
         relative_path = os.path.relpath(root, input_dir)
         output_root = os.path.join(output_dir, relative_path)
 
@@ -20,4 +20,4 @@ def process_dir(input_dir: str, output_dir: str) -> None:
 
 
 if __name__ == "__main__":
-    process_dir("input_folder", "output_folder")
+    process_dir("input_folder", "output_folder_2")

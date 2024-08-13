@@ -96,10 +96,8 @@ class TestGet:
         self._assert_expected_parse_args_flags(parse_args, expected)
 
     def _assert_expected_parse_args_io_paths(
-            self, 
-            parse_args: argparse.Namespace, 
-            expected: Dict[str, List[str]]
-        ) -> None:
+        self, parse_args: argparse.Namespace, expected: Dict[str, List[str]]
+    ) -> None:
         assert parse_args.input_paths == expected["input_paths"]
         assert parse_args.output_paths == expected["output_paths"]
 
@@ -158,10 +156,7 @@ class TestGet:
         self._assert_err_message_in_outerr(PATH_NOT_FOUND_ERROR.format(nonexisting_path), capsys)
 
     def _assert_excinfo_expected(
-            self, 
-            excinfo: pytest.ExceptionInfo, 
-            expected_code: int = 1, 
-            expected_type: Exception = SystemExit
-        ) -> None:
+        self, excinfo: pytest.ExceptionInfo, expected_code: int = 1, expected_type: Exception = SystemExit
+    ) -> None:
         assert excinfo.type == expected_type
         assert excinfo.value.code == expected_code

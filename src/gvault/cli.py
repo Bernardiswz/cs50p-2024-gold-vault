@@ -1,6 +1,6 @@
 import argparse
-from gvault.crypto import crypto_main
-from gvault.parser import get_parser # type: ignore
+from gvault.crypto import crypto_main  # type: ignore
+from gvault.parser import get_parser  # type: ignore
 
 
 def cli_main() -> None:
