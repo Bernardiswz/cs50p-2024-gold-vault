@@ -95,7 +95,7 @@ class TestCrypto:
             crypto, "_get_password", return_value="password"
         ):
             crypto._process_file("input_file", "output_file")
-            mock_encrypt_file.assert_called_once_with("input_file", "output_file", "password")
+            mock_encrypt_file.assert_called_once_with("input_file", "output_file")
 
     def test_process_file_decrypt(self, mock_parse_args: MagicMock) -> None:
         mock_parse_args.encrypt = False
@@ -105,7 +105,7 @@ class TestCrypto:
             crypto, "_get_password", return_value="password"
         ):
             crypto._process_file("input_file", "output_file")
-            mock_decrypt_file.assert_called_once_with("input_file", "output_file", "password")
+            mock_decrypt_file.assert_called_once_with("input_file", "output_file")
 
     def test_get_password(self, mock_parse_args: MagicMock) -> None:
         password: str = "password"
