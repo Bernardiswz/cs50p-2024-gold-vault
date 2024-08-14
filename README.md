@@ -5,6 +5,7 @@
 + [Cautions](#cautions)
 + [Prerequisites](#prerequisites)
 + [Installation](#installation)
++ [App Docs](#app-docs)
 + [Contact Information and Licensing](#contact-information-and-licensing)
 
 #### Description: ####
@@ -50,8 +51,12 @@ given, confirmation will be asked to overwrite the already existing output path.
 unexpected behavior in system's resources or other operations related to such built-in functionality might affect the
 program's normal behavior.
 
-Encrypted files preferably shouldn't have their data modified, or it could put at risk the original data written to it.
-And possibly the salt and iv bytes which are what will make the encryption reversible.
+Encrypted files preferably shouldn't have their data modified, or it could put at risk the original data written to it 
+to be reversible to decryption.
+
+For sake of simplicity and efficiency, confirmation isn't asked for passwords. So, if in doubt whether the password
+typed is correct. Attempt decryption of the now encrypted file using the same password. Preferably don't delete the
+original file or its data before assuring it's with the correct password.
 
 ### Prerequisites ###
 + Python 3.12.4 or later: [Download Python](https://www.python.org/downloads/)
@@ -65,11 +70,13 @@ the project to the python environment. Either local or virtual (venv).
 
 3. The `gvault` command will be available at the command line interface to use.
 
+### App docs ###
+Brief documentation referent to app specific structure, behavior or functionality are found at [docs](docs/).
 
 #### Contact Information and licensing ####
 + GitHub: [Bernardiswz](https://github.com/Bernardiswz)
 + LinkedIn [Bernardo Alekhine](https://www.linkedin.com/in/bernardo-alekhine-461791299)
 
 This project may not be production-ready and/or fully fledged.
-I take no responsibility for the usage or any possible fails or losses of data through the usage of  `gvault`. Since it
+I take no responsibility for the usage or any possible fails or losses of data through the usage of `gvault`. Since it
 is a learning project and the project and meant to be sent to CS50P 2024 as the final project.
