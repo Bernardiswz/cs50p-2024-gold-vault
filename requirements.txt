@@ -5,7 +5,6 @@ click==8.1.7
 coverage==7.6.0
 cryptography==43.0.0
 dill==0.3.8
--e git+https://github.com/Bernardiswz/cs50p-2024-gold-vault.git@794986976722c3ee8e7e071d16f75928053a4cbf#egg=gold_vault
 iniconfig==2.0.0
 isort==5.13.2
 mccabe==0.7.0

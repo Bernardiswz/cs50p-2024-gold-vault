@@ -36,6 +36,7 @@ class TestCrypto:
         crypto._process_path("input_path", "output_path")
         mock_process_file.assert_called_once_with("input_path", "output_path")
 
+    @patch.object(Crypto, "_get_password")
     @patch.object(Crypto, "_get_path_type")
     @patch.object(Crypto, "_should_write_output_path")
     @patch.object(Crypto, "_process_dir")
@@ -44,9 +45,11 @@ class TestCrypto:
         mock_process_dir: MagicMock,
         mock_should_write: MagicMock,
         mock_get_path_type: MagicMock,
+        mock_get_password: MagicMock,
         mock_parse_args: MagicMock,
     ) -> None:
         crypto: Crypto = Crypto(mock_parse_args)
+        mock_get_password.retrun_value = "password"
         mock_get_path_type.return_value = "directory"
         mock_should_write.return_value = True
         crypto._process_path("input_path", "output_path")
@@ -154,6 +157,7 @@ class TestCrypto:
             mock_get_link_path.assert_called_once_with("linkpath")
 
     @patch("os.walk")
+    @patch.object(Crypto, "_get_password")
     @patch.object(Crypto, "_should_write_output_path")
     @patch.object(Crypto, "_make_output_dir")
     @patch.object(Crypto, "_process_dir_child_items")
@@ -162,11 +166,12 @@ class TestCrypto:
         mock_process_dir_child_items: MagicMock,
         mock_make_output_dir: MagicMock,
         mock_should_write: MagicMock,
+        mock_get_password: MagicMock,
         mock_os_walk: MagicMock,
         mock_parse_args: MagicMock,
     ) -> None:
         crypto: Crypto = Crypto(mock_parse_args)
-
+        mock_get_password.return_value = "password"
         # Mock the os.walk to simulate a directory structure
         mock_os_walk.return_value = [
             ("/input_dir", ["subdir"], ["file1.txt", "file2.txt"]),
@@ -181,16 +186,17 @@ class TestCrypto:
         mock_make_output_dir.assert_any_call("/output_dir/.")
         mock_make_output_dir.assert_any_call("/output_dir/subdir")
 
-        mock_process_dir_child_items.assert_any_call(["file1.txt", "file2.txt"], "/input_dir", "/output_dir/.")
-        mock_process_dir_child_items.assert_any_call(["file3.txt"], "/input_dir/subdir", "/output_dir/subdir")
+        mock_process_dir_child_items.assert_any_call(["file1.txt", "file2.txt"], "/input_dir", "/output_dir/.", "password")
+        mock_process_dir_child_items.assert_any_call(["file3.txt"], "/input_dir/subdir", "/output_dir/subdir", "password")
 
     @patch.object(Crypto, "_process_path")
     def test_process_dir_child_items(self, mock_process_path: MagicMock, mock_parse_args: MagicMock) -> None:
+        password: str = "password"
         crypto: Crypto = Crypto(mock_parse_args)
         files: List[str] = ["file1.txt", "file2.txt"]
         root: str = "/input_dir/subdir"
         output_root: str = "/output_dir/subdir"
-        crypto._process_dir_child_items(files, root, output_root)
-        mock_process_path.assert_any_call("/input_dir/subdir/file1.txt", "/output_dir/subdir/file1.txt")
-        mock_process_path.assert_any_call("/input_dir/subdir/file2.txt", "/output_dir/subdir/file2.txt")
+        crypto._process_dir_child_items(files, root, output_root, password)
+        mock_process_path.assert_any_call("/input_dir/subdir/file1.txt", "/output_dir/subdir/file1.txt", password)
+        mock_process_path.assert_any_call("/input_dir/subdir/file2.txt", "/output_dir/subdir/file2.txt", password)
         assert mock_process_path.call_count == 2

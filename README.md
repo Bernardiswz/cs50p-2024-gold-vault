@@ -70,6 +70,8 @@ the project to the python environment. Either local or virtual (venv).
 
 3. The `gvault` command will be available at the command line interface to use.
 
+If fail at running `pip install .`, remove `gold-vault` directory from `src` and reinstall.
+
 ### App docs ###
 Brief documentation referent to app specific structure, behavior or functionality are found at [docs](docs/).
 
