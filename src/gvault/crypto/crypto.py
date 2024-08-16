@@ -229,7 +229,6 @@ class Crypto:
             output_root: str = os.path.join(output_dir, relative_path)
             if not self._should_write_output_path(output_root):
                 continue
-            self._make_output_dir(output_root)
             self._process_dir_child_items(files, root, output_root, self._get_password())
 
     def _make_output_dir(self, path: str) -> None:
@@ -246,7 +245,7 @@ class Crypto:
         """
         Method used by '_process_dir' to process the files of the input dir or any other directory related.
         For every file, get its true input and output path through os.path.join and then call on '_process_path' to
-        process it.
+        process it. And makes output dir.
 
         Args:
             files (List[str]): Files of the directory to be processed.
@@ -254,6 +253,7 @@ class Crypto:
             output_root (str): Root directory of the output path, the one which the directory's files will be written.
             password (str): Password for encryption and decryption.
         """
+        self._make_output_dir(output_root)
         for file_name in files:
             input_file_path: str = os.path.join(root, file_name)
             output_file_path: str = os.path.join(output_root, file_name)
