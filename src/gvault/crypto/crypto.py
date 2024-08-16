@@ -6,11 +6,13 @@ will perform the operations according to the structure and arguments given to 'p
 import argparse
 from getpass import getpass
 import os
+from shutil import rmtree
 from typing import List
 from .decrypt import decrypt_file
 from .encrypt import encrypt_file
 from .utils.file_utils import confirm_overwrite_path
 from .utils import LinkProcessor
+from gvault.error_handling.exceptions.crypto_exceptions import DecryptionError # type: ignore
 
 
 __all__ = ["Crypto"]
@@ -50,7 +52,13 @@ class Crypto:
         for input_path, output_path in zip(self.parse_args.input_paths, self.parse_args.output_paths):
             self._process_path(input_path, output_path)
 
-    def _process_path(self, input_path: str, output_path: str, password: str = "") -> None:
+    def _process_path(
+            self, 
+            input_path: str, 
+            output_path: str,
+            should_write_output_path: bool = False,
+            password: str = ""
+            ) -> None:
         """
         Process the input path according to its path type. If file exists asks for confirmation to overwrite, if
         overwriting is not accepted. Return.
@@ -62,11 +70,13 @@ class Crypto:
         Args:
             input_path (str).
             output_path (str).
+            should_wirte_output_path (bool)
             password (str): Used to process directory items.
         """
         input_path_type: str = self._get_path_type(input_path)
-        if not self._should_write_output_path(output_path):
-            return
+        if not should_write_output_path:
+            if not self._should_write_output_path(output_path):
+                return
         match input_path_type:
             case "file":
                 if password:
@@ -227,9 +237,10 @@ class Crypto:
         for root, _, files in os.walk(input_dir):
             relative_path: str = os.path.relpath(root, input_dir)
             output_root: str = os.path.join(output_dir, relative_path)
-            if not self._should_write_output_path(output_root):
+            should_write_output_path: bool = self._should_write_output_path(output_root)
+            if not should_write_output_path:
                 continue
-            self._process_dir_child_items(files, root, output_root, self._get_password())
+            self._process_dir_child_items(files, root, output_root, self._get_password(), should_write_output_path)
 
     def _make_output_dir(self, path: str) -> None:
         """
@@ -241,7 +252,14 @@ class Crypto:
         """
         os.makedirs(path)
 
-    def _process_dir_child_items(self, files: List[str], root: str, output_root: str, password: str = "") -> None:
+    def _process_dir_child_items(
+            self, 
+            files: List[str],
+            root: str, 
+            output_root: str, 
+            password: str = "",
+            should_write_output_path: bool = False
+            ) -> None:
         """
         Method used by '_process_dir' to process the files of the input dir or any other directory related.
         For every file, get its true input and output path through os.path.join and then call on '_process_path' to
@@ -253,8 +271,14 @@ class Crypto:
             output_root (str): Root directory of the output path, the one which the directory's files will be written.
             password (str): Password for encryption and decryption.
         """
-        self._make_output_dir(output_root)
-        for file_name in files:
-            input_file_path: str = os.path.join(root, file_name)
-            output_file_path: str = os.path.join(output_root, file_name)
-            self._process_path(input_file_path, output_file_path, password)
+        if not os.path.exists(output_root):
+            self._make_output_dir(output_root)
+        try:
+            for file_name in files:
+                input_file_path: str = os.path.join(root, file_name)
+                output_file_path: str = os.path.join(output_root, file_name)
+                self._process_path(input_file_path, output_file_path, should_write_output_path, password)
+        except DecryptionError as e:
+            if not os.listdir(output_root.replace(".", "")):
+                rmtree(output_root.replace(".", "")) # Remove '.' at the end, as in path/.
+            raise e

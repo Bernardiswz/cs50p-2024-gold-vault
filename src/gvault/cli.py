@@ -16,6 +16,8 @@ def cli_main() -> None:
     try:
         parse_args: argparse.Namespace = get_parser()
         crypto_main(parse_args)
+    except (KeyboardInterrupt, EOFError):
+        sys.exit()
     except Exception as e:
         sys.exit(e)
 
