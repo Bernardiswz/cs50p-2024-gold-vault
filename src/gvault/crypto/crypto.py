@@ -50,7 +50,7 @@ class Crypto:
         for input_path, output_path in zip(self.parse_args.input_paths, self.parse_args.output_paths):
             self._process_path(input_path, output_path)
 
-    def _process_path(self, input_path: str, output_path: str) -> None:
+    def _process_path(self, input_path: str, output_path: str, password: str = "") -> None:
         """
         Process the input path according to its path type. If file exists asks for confirmation to overwrite, if
         overwriting is not accepted. Return.
@@ -62,13 +62,17 @@ class Crypto:
         Args:
             input_path (str).
             output_path (str).
+            password (str): Used to process directory items.
         """
         input_path_type: str = self._get_path_type(input_path)
         if not self._should_write_output_path(output_path):
             return
         match input_path_type:
             case "file":
-                self._process_file(input_path, output_path)
+                if password:
+                    self._process_file(input_path, output_path, password)
+                else:
+                    self._process_file(input_path, output_path)
             case "directory":
                 self._process_dir(input_path, output_path)
             case "symlink":
@@ -148,7 +152,7 @@ class Crypto:
         """
         self.link_processor.get_link_path(link_path)
 
-    def _process_file(self, input_file_path: str, output_file_path: str) -> None:
+    def _process_file(self, input_file_path: str, output_file_path: str, password: str = "") -> None:
         """
         Process a file type input path. Checks for usage type in 'parse_args' (encrypt|decrypt) and calls on wrapper
         methods of '_encrypt_file' or '_decrypt_file' accordingly.
@@ -156,13 +160,20 @@ class Crypto:
         Args:
             input_file_path (str).
             output_file_path (str).
+            password (str): Optional password parameter for handling dir child items.
         """
         if self.parse_args.encrypt:
-            self._encrypt_file(input_file_path, output_file_path)
+            if password:
+                self._encrypt_file(input_file_path, output_file_path, password)
+            else:
+                self._encrypt_file(input_file_path, output_file_path)
         elif self.parse_args.decrypt:
-            self._decrypt_file(input_file_path, output_file_path)
+            if password:
+                self._decrypt_file(input_file_path, output_file_path, password)
+            else:
+                self._decrypt_file(input_file_path, output_file_path)
 
-    def _encrypt_file(self, input_file_path: str, output_file_path: str) -> None:
+    def _encrypt_file(self, input_file_path: str, output_file_path: str, password: str = "") -> None:
         """
         Wrapper method to call on 'encrypt_file' function, and calls on wrapper method '_get_password' to give the
         function the password parameter.
@@ -170,10 +181,15 @@ class Crypto:
         Args:
             input_file_path (str).
             output_file_path (str).
+            password (str): Optional password parameter for handling dir child items.
         """
-        encrypt_file(input_file_path, output_file_path, self._get_password())
+        if password:
+            encrypt_file(input_file_path, output_file_path, password)
+        else:
+            encrypt_file(input_file_path, output_file_path, self._get_password())
 
-    def _decrypt_file(self, input_file_path: str, output_file_path: str) -> None:
+
+    def _decrypt_file(self, input_file_path: str, output_file_path: str, password: str = "") -> None:
         """
         Wrapper method to call on 'decrypt_file' function, and calls on wrapper method '_get_password' to give the
         function the password parameter.
@@ -181,8 +197,12 @@ class Crypto:
         Args:
             input_file_path (str).
             output_file_path (str).
+            password (str): Optional password parameter for handling dir child items.
         """
-        decrypt_file(input_file_path, output_file_path, self._get_password())
+        if password:
+            decrypt_file(input_file_path, output_file_path, password)
+        else:
+            decrypt_file(input_file_path, output_file_path, self._get_password())
 
     def _get_password(self) -> str:
         """
@@ -210,7 +230,7 @@ class Crypto:
             if not self._should_write_output_path(output_root):
                 continue
             self._make_output_dir(output_root)
-            self._process_dir_child_items(files, root, output_root)
+            self._process_dir_child_items(files, root, output_root, self._get_password())
 
     def _make_output_dir(self, path: str) -> None:
         """
@@ -222,7 +242,7 @@ class Crypto:
         """
         os.makedirs(path)
 
-    def _process_dir_child_items(self, files: List[str], root: str, output_root: str) -> None:
+    def _process_dir_child_items(self, files: List[str], root: str, output_root: str, password: str = "") -> None:
         """
         Method used by '_process_dir' to process the files of the input dir or any other directory related.
         For every file, get its true input and output path through os.path.join and then call on '_process_path' to
@@ -232,8 +252,9 @@ class Crypto:
             files (List[str]): Files of the directory to be processed.
             root (str): Root directory of the input paths.
             output_root (str): Root directory of the output path, the one which the directory's files will be written.
+            password (str): Password for encryption and decryption.
         """
         for file_name in files:
             input_file_path: str = os.path.join(root, file_name)
             output_file_path: str = os.path.join(output_root, file_name)
-            self._process_path(input_file_path, output_file_path)
+            self._process_path(input_file_path, output_file_path, password)
