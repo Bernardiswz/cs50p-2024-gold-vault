@@ -1,5 +1,5 @@
 # Gold Vault #
-#### Video Demo:  <URL HERE> ####
+#### Video Demo: https://www.youtube.com/watch?v=r7ssFPgYBkc ####
 ## Content table ##
 + [Description](#description)
 + [Cautions](#cautions)
